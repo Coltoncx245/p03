@@ -21,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="i03.dat" />
+    <None Include="o03.dat" />
   </ItemGroup>
 </Project>
