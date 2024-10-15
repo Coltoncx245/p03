@@ -1,4 +1,5 @@
 #include "utility.h"
+#include "Binary_node.h"
 
 template <class Record>
 class Lazy_tree: public Search_tree<Record>
@@ -34,6 +35,14 @@ bool Lazy_tree<Record>::remove(const Record &data)
 {
 
 }
+
+// RECURSIVE REMOVE
+template <class Record>
+bool Lazy_tree<Record>::search_and_delete(Binary_node<Record>* &sub_root, const Record &target)
+{
+
+}
+
 
 // FIND MIN IMPLEMENTATION
 template <class Record>

@@ -6,6 +6,7 @@ struct Binary_node{
    Entry data;
    Binary_node<Entry> *left;
    Binary_node<Entry> *right;
+   bool deleted = 0;
 //    constructors:
    Binary_node();
    explicit Binary_node(const Entry &x);
