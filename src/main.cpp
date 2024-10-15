@@ -5,9 +5,9 @@
 
 
 int main(){
-   string input = "";
+   string input;
    bool exit_now = false;
-   Search_tree<int> stree;
+   Search_tree<int> searchTree;
    while(!exit_now){
       cout << endl;
       cout << "***********************" << endl;
@@ -30,8 +30,8 @@ int main(){
          getline(cin, input);
 
          while(input != "q"){
-            stree.insert(string_to_int(input));
-            stree.print();            
+            searchTree.insert(string_to_int(input));
+            searchTree.print();            
             getline(cin, input);
          }
       } 
@@ -41,19 +41,19 @@ int main(){
          cout << endl;
          getline(cin, input);
          while(input != "q"){
-            stree.remove(string_to_int(input));
-            stree.print();            
+            searchTree.remove(string_to_int(input));
+            searchTree.print();            
             getline(cin, input);
          }
       } 
       else if (input == "c")
-         stree.clear();
+         searchTree.clear();
       else if (input == "p")
-         stree.print();
+         searchTree.print();
       else if (input == "h")
-         cout << endl << "The height of the binary tree is " << stree.height() << endl;
+         cout << endl << "The height of the binary tree is " << searchTree.height() << endl;
       else if (input == "s")
-         cout << endl << "The size (node count) of the binary tree is " << stree.size() << endl;
+         cout << endl << "The size (node count) of the binary tree is " << searchTree.size() << endl;
       else if(input == "x")
          exit_now = true;
    }
