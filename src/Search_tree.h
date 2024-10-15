@@ -1,14 +1,16 @@
 template <class Record>
 class Search_tree: public Binary_tree<Record> {
 public:
-   Error_code insert(const Record &new_data);
-   Error_code remove(const Record &target);
-   Error_code tree_search(Record &target) const;
+    virtual Error_code insert(const Record &new_data);
+
+    virtual Error_code remove(const Record &target);
+    Error_code tree_search(Record &target) const;
 protected:
-   // Auxiliary functions
-   Error_code search_and_insert(Binary_node<Record>* &sub_root, const Record &new_data);
-   Error_code search_and_delete(Binary_node<Record>* &sub_root, const Record &target);
-   Binary_node<Record>* search_for_node(Binary_node<Record>* sub_root, const Record &target) const;
+    virtual // Auxiliary functions
+    Error_code search_and_insert(Binary_node<Record>* &sub_root, const Record &new_data);
+
+    virtual Error_code search_and_delete(Binary_node<Record>* &sub_root, const Record &target);
+    Binary_node<Record>* search_for_node(Binary_node<Record>* sub_root, const Record &target) const;
 };
 
 
