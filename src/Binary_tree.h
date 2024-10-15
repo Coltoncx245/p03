@@ -2,14 +2,14 @@ template <class Entry>
 class Binary_tree {
 public:
    Binary_tree();
-   bool empty() const;
-   void preorder(void (*visit)(Entry &));
+    [[nodiscard]] bool empty() const;
+    void preorder(void (*visit)(Entry &));
    void inorder(void (*visit)(Entry &));
    void postorder(void (*visit)(Entry &));
 
-   int size() const;
+   [[nodiscard]] int size() const;
    void clear();
-   int height() const;
+   [[nodiscard]] int height() const;
 
    void print() const; // A method to print out the tree using preorder
 
@@ -273,7 +273,7 @@ Uses: The function recursive_copy recursively
    if (sub_root == NULL)
       return NULL;
    else {
-      Binary_node<Entry>* new_sub_root = new Binary_node<Entry>(sub_root->data);
+      auto new_sub_root = new Binary_node<Entry>(sub_root->data);
       new_sub_root->left = recursive_copy(sub_root->left);
       new_sub_root->right = recursive_copy(sub_root->right);
       return new_sub_root;

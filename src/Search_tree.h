@@ -2,7 +2,7 @@ template <class Record>
 class Search_tree: public Binary_tree<Record> {
 public:
    Error_code insert(const Record &new_data);
-   Error_code remove(const Record &old_data);
+   Error_code remove(const Record &target);
    Error_code tree_search(Record &target) const;
 protected:
    // Auxiliary functions
@@ -119,5 +119,3 @@ Binary_node<Record> *Search_tree<Record>::search_for_node(
       return search_for_node(sub_root->right, target);
    else return search_for_node(sub_root->left, target);
 }
-
-
