@@ -24,7 +24,7 @@ protected:
     void recursive_preorder(Binary_node<Record>* node, std::string &result);
     bool search_and_insert(Binary_node<Record>* &sub_root, const Record &new_data);
     bool search_and_delete(Binary_node<Record>* &sub_root, const Record &target);
-    virtual void lazy_print(Binary_node<Record>* node, std::string &result) = 0;
+    virtual void lazy_print(Binary_node<Record>* node, std::string &result);
 
 };
 
