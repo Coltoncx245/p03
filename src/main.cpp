@@ -3,7 +3,6 @@
 #include "Binary_tree.h"
 #include "Search_tree.h"
 
-// // Update to pass the correct type for Lazy_tree
 // void process_command(const std::string &command, Lazy_tree<int> &tree, std::ofstream &outfile);
 
 int main(int argc, char *argv[])
@@ -13,7 +12,6 @@ int main(int argc, char *argv[])
 
 ////// This is a very rough idea of what I think we're going to have to do logically to parse the input file
 ////// But uncomment at your own risk
-//// Define the correct template parameter for Lazy_tree in the function as well
 //void process_command(const std::string &command, Lazy_tree<int> &tree, std::ofstream &outfile) {
 //    std::istringstream iss(command);
 //    std::string operation;
