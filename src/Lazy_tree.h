@@ -1,15 +1,19 @@
 #include "utility.h"
 #include "Binary_node.h"
+#include "Search_tree.h"
 
 template <class Record>
 class Lazy_tree: public Search_tree<Record>
 {
+private:
+    int count{};
+
 public:
     bool insert(const Record &data);
     bool remove(const Record &data);
     int findMin();
     int findMax();
-    bool constains(const Record &data);
+    bool constains(Binary_node<Record>* &sub_root, const Record &target);
     std::string print();
     int height();
     int size();
@@ -19,6 +23,7 @@ protected:
     bool search_and_insert(Binary_node<Record>* &sub_root, const Record &new_data);
     bool search_and_delete(Binary_node<Record>* &sub_root, const Record &target);
     Binary_node<Record>* search_for_node(Binary_node<Record>* sub_root, const Record &target) const;
+    virtual void lazy_print(Binary_node<Record>* node, std::string &result) = 0;
 
 };
 
@@ -26,18 +31,38 @@ protected:
 template <class Record>
 bool Lazy_tree<Record>::insert(const Record &data)
 {
+    if (data < 1 || data > 99){throw std::out_of_range("Data must be in the range [1,99].");}
+
     if (this->root == nullptr)
     {
         // Create a new node with the data
-        this->root = new Binary_node<Record>();
+        this->root = new Binary_node<Record>(data);
         ++count;
-        return true;
+        return true; // New records inserted
     }
-    else
+    else{return search_and_insert(this->root, data);} // Use search_and_insert to handle recursion
+}
+
+template <class Record>
+bool Lazy_tree<Record>::search_and_insert(Binary_node<Record>* &sub_root, 
+                                          const Record &new_data)
+{
+    if (sub_root == nullptr)
     {
-        // Use search and insert to handle recursion
-        return false;
+        // Insert new node here
+        sub_root = new Binary_node<Record>(new_data);
+        ++count;
+        return true; // New element inserted
     }
+    else if (new_data < sub_root->data){return search_and_insert(sub_root->left, new_data);} // Traverse left subtree
+    else if (new_data > sub_root->data){return search_and_insert(sub_root->right, new_data);} // Traverse right subtree
+    else if (sub_root->deleted)
+    {
+        // If the node is marked as deleted, "undelete" it
+        sub_root->deleted = false;
+        return true;  // Element "undeleted"
+    }
+    else{return false;} // Data already exists and is not marked as deleted. No new insertion
 }
 
 //REMOVE IMPLEMENTATION
@@ -49,7 +74,8 @@ bool Lazy_tree<Record>::remove(const Record &dataToDelete)
 
 // RECURSIVE REMOVE
 template <class Record>
-bool Lazy_tree<Record>::search_and_delete(Binary_node<Record>* &sub_root, const Record &target)
+bool Lazy_tree<Record>::search_and_delete(Binary_node<Record>* &sub_root, 
+                                          const Record &target)
 {
     if (sub_root == NULL){return 0;}
     if (sub_root->data == target){return sub_root->deleted = 1;}
@@ -77,8 +103,6 @@ int Lazy_tree<Record>::findMin()
     return stack.top();                       
 }
 
-
-
 // FIND MAX IMPLEMENTATION
 template <class Record>
 int Lazy_tree<Record>::findMax()
@@ -102,8 +126,8 @@ int Lazy_tree<Record>::findMax()
 template <class Record>
 bool Lazy_tree<Record>::constains(const Record &target)
 {
-    if (sub_root == NULL){return 0;}
-    if (sub_root->data == target){target->deleted ? return  0 : return 1;}
+    if (sub_root == NULL){return false;}
+    if (sub_root->data == target){return !target->deleted;}
     else if (target < sub_root->data){return constains(sub_root->left, target);}
     else if (target > sub_root->data){return constains(sub_root->right, target);}
 }
@@ -112,7 +136,20 @@ bool Lazy_tree<Record>::constains(const Record &target)
 template <class Record>
 std::string Lazy_tree<Record>::print()
 {
+    std::string result;
+    if (this->root == nullptr) result = "EMPTY TREE";
+    else result = recursive_preorder(this->root, &Lazy_tree<Record>::lazy_print); // Perform a pre-order traversal and build the result string
 
+    return result;
+}
+
+// LAZY PRINT FUNCTION
+template <class Record>
+void Lazy_tree<Record>::lazy_print(Binary_node<Record>* node, 
+                                   std::string &result)
+{
+    if (node->deleted) result += "*";  // Mark deleted nodes with an asterisk before the data
+    result += std::to_string(node->data) + " ";  // Add the node's data followed by a space
 }
 
 // HEIGHT IMPLEMENTATION
@@ -127,26 +164,4 @@ template <class Record>
 int Lazy_tree<Record>::size()
 {
 
-}
-
-template <class Record>
-bool Lazy_tree<Record>::search_and_insert(Binary_node <Record>* &sub_root, const Record &new_data)
-{
-    if (sub_root == nullptr)
-    {
-        sub_root = new Binary_node<Record>(new_data);
-        ++ count;
-        return true;
-    }
-    else if (new_data < sub_root->data)
-    {
-        return search_and_insert(sub_root->left, new_data);
-    }
-    else if (sub_root->deleted)
-    {
-        // If the node is marked as deleted, we undelete it
-        sub_root->deleted = false;
-        return true;
-    }
-    else return false; // Data already exists and is not marked as deleted
 }
