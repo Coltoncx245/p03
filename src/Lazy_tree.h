@@ -137,7 +137,7 @@ bool Lazy_tree<Record>::constains(Binary_node<Record>* &sub_root,
                                   const Record &target)
 {
     if (sub_root == NULL){return false;}
-    if (sub_root->data == target){return !target->deleted;}
+    if (sub_root->data == target){return !sub_root->deleted;}
     else if (target < sub_root->data){return constains(sub_root->left, target);}
     else if (target > sub_root->data){return constains(sub_root->right, target);}
 }
