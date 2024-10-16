@@ -7,6 +7,7 @@ class Lazy_tree: public Search_tree<Record>
 {
 private:
     int count{};
+    Binary_node<Record>* root;
 
 public:
     bool insert(const Record &data);
