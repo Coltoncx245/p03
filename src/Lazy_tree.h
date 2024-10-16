@@ -20,9 +20,9 @@ public:
 
 
 protected:
+    void recursive_preorder(Binary_node<Record>* node, std::string &result);
     bool search_and_insert(Binary_node<Record>* &sub_root, const Record &new_data);
     bool search_and_delete(Binary_node<Record>* &sub_root, const Record &target);
-    Binary_node<Record>* search_for_node(Binary_node<Record>* sub_root, const Record &target) const;
     virtual void lazy_print(Binary_node<Record>* node, std::string &result) = 0;
 
 };
@@ -44,7 +44,20 @@ bool Lazy_tree<Record>::insert(const Record &data)
 }
 
 template <class Record>
-bool Lazy_tree<Record>::search_and_insert(Binary_node<Record>* &sub_root, 
+void Lazy_tree<Record>::recursive_preorder(Binary_node<Record>* node,
+                                           std::string &result)
+{
+    if (node != nullptr)
+    {
+        lazy_print(node, result);  // Visit the node and accumulate its data into the result string
+        recursive_preorder(node->left, result);  // Traverse left subtree
+        recursive_preorder(node->right, result);  // Traverse right subtree
+    }
+}
+
+
+template <class Record>
+bool Lazy_tree<Record>::search_and_insert(Binary_node<Record>* &sub_root,
                                           const Record &new_data)
 {
     if (sub_root == nullptr)
@@ -67,40 +80,36 @@ bool Lazy_tree<Record>::search_and_insert(Binary_node<Record>* &sub_root,
 
 //REMOVE IMPLEMENTATION
 template <class Record>
-bool Lazy_tree<Record>::remove(const Record &dataToDelete)
-{
-    return search_and_delete(this->root, dataToDelete);
-}
+bool Lazy_tree<Record>::remove(const Record &dataToDelete){return search_and_delete(this->root, dataToDelete);}
 
 // RECURSIVE REMOVE
 template <class Record>
-bool Lazy_tree<Record>::search_and_delete(Binary_node<Record>* &sub_root, 
+bool Lazy_tree<Record>::search_and_delete(Binary_node<Record>* &sub_root,
                                           const Record &target)
 {
-    if (sub_root == NULL){return 0;}
-    if (sub_root->data == target){return sub_root->deleted = 1;}
+    if (sub_root == NULL){return false;}
+    if (sub_root->data == target){return sub_root->deleted = true;}
     else if (target < sub_root->data){return search_and_delete(sub_root->left, target);}
     else if (target > sub_root->data){return search_and_delete(sub_root->right, target);}
 }
-
 
 // FIND MIN IMPLEMENTATION
 template <class Record>
 int Lazy_tree<Record>::findMin()
 {
     if (this->root == nullptr){return -1;}
-    
+
     std::stack<Record> stack;
     Binary_node<Record>* r = this->root;
     // traverse left leg of tree, pushing all nodes onto stack
-    while (r)                   
+    while (r)
     {
-        stack.push(r->data);    
-        r = r->left;        
+        stack.push(r->data);
+        r = r->left;
     }
     // stack now has all elements in left leg of tree in descending order (from top down)
     while (stack.top().deleted){stack.pop();} // remove deleted elements from the top of the stack
-    return stack.top();                       
+    return stack.top();
 }
 
 // FIND MAX IMPLEMENTATION
@@ -108,23 +117,24 @@ template <class Record>
 int Lazy_tree<Record>::findMax()
 {
     if (this->root == nullptr){return -1;}
-    
+
     std::stack<Record> stack;
     Binary_node<Record>* r = this->root;
     // traverse RIGHT leg of tree, pushing all nodes onto stack
-    while (r)                   
+    while (r)
     {
-        stack.push(r->data);    
-        r = r->right;        
+        stack.push(r->data);
+        r = r->right;
     }
     // stack now has all elements in left leg of tree in descending order (from top down)
     while (stack.top().deleted){stack.pop();} // remove deleted elements from the top of the stack
-    return stack.top();   
+    return stack.top();
 }
 
 // CONSTAINS IMPLEMENTATION
 template <class Record>
-bool Lazy_tree<Record>::constains(const Record &target)
+bool Lazy_tree<Record>::constains(Binary_node<Record>* &sub_root,
+                                  const Record &target)
 {
     if (sub_root == NULL){return false;}
     if (sub_root->data == target){return !target->deleted;}
@@ -137,26 +147,28 @@ template <class Record>
 std::string Lazy_tree<Record>::print()
 {
     std::string result;
-    if (this->root == nullptr) result = "EMPTY TREE";
-    else result = recursive_preorder(this->root, &Lazy_tree<Record>::lazy_print); // Perform a pre-order traversal and build the result string
+    if (this->root == nullptr){result = "EMPTY TREE";}
+    else{recursive_preorder(this->root, result);}  // Call the overloaded version for Lazy_tree
 
-    return result;
+    return result;  // Return the accumulated result string
 }
+
 
 // LAZY PRINT FUNCTION
 template <class Record>
-void Lazy_tree<Record>::lazy_print(Binary_node<Record>* node, 
+void Lazy_tree<Record>::lazy_print(Binary_node<Record>* node,
                                    std::string &result)
 {
-    if (node->deleted) result += "*";  // Mark deleted nodes with an asterisk before the data
+    if (node->deleted){result += "*";}  // Mark deleted nodes with an asterisk before the data
     result += std::to_string(node->data) + " ";  // Add the node's data followed by a space
 }
+
 
 // HEIGHT IMPLEMENTATION
 template <class Record>
 int Lazy_tree<Record>::height()
 {
-
+    // use post order?
 }
 
 // SIZE IMPLEMENTATION
