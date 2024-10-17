@@ -1,15 +1,14 @@
 template <typename Entry>
 struct TreeNode
 {
-    // data members
     TreeNode<Entry>* left;
     TreeNode<Entry>* right;
-    int key;  // The key is now private as specified in the UML
+    int key;
     bool deleted;
 
     // Constructors:
     TreeNode();
-    explicit TreeNode(int k);  // Constructor that takes an int for the key
+    explicit TreeNode(int k);
 
     // Accessor for the key:
     [[nodiscard]] int getKey() const;
