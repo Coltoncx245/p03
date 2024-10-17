@@ -1,37 +1,26 @@
-enum Balance_factor { left_higher, equal_height, right_higher };
-
-template <class Entry>
+template <typename Entry>
 struct TreeNode
 {
-    // data members:
-    Entry data;
-    TreeNode<Entry> *left;
-    TreeNode<Entry> *right;
-    bool deleted = false;
-    int key{};
+    // data members
+    TreeNode<Entry>* left;
+    TreeNode<Entry>* right;
+    int key;  // The key is now private as specified in the UML
+    bool deleted;
 
-    // constructors:
+    // Constructors:
     TreeNode();
-    explicit TreeNode(const Entry &x);
+    explicit TreeNode(int k);  // Constructor that takes an int for the key
 
-    // virtual methods:
-    virtual void set_balance(Balance_factor b);
-    [[nodiscard]] virtual Balance_factor get_balance() const;
+    // Accessor for the key:
+    [[nodiscard]] int getKey() const;
 };
 
-template <class Entry>
-TreeNode<Entry>::TreeNode(){left, right = NULL;}
+template <typename Entry>
+TreeNode<Entry>::TreeNode() : key(0), deleted(false), left(nullptr), right(nullptr) {}
 
-template <class Entry>
-TreeNode<Entry>::TreeNode(const Entry &x)
-{
-    data = x;
-    left, right = NULL;
-}
+template <typename Entry>
+TreeNode<Entry>::TreeNode(int k) : key(k), deleted(false), left(nullptr), right(nullptr) {}
 
-// Dummy functions
-template <class Entry>
-void TreeNode<Entry>::set_balance(Balance_factor b){}
-
-template <class Entry>
-Balance_factor TreeNode<Entry>::get_balance() const{return equal_height;}
+// Getter for key
+template <typename Entry>
+int TreeNode<Entry>::getKey() const { return key; }
