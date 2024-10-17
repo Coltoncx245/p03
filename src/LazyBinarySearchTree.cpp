@@ -6,7 +6,7 @@ class LazyBinarySearchTree
 {
 private:
     int count{};
-    TreeNode<int>* root;  // Use int instead of Record
+    TreeNode<int>* root;
 
 public:
     LazyBinarySearchTree() : root(nullptr), count(0) {}
@@ -34,7 +34,7 @@ bool LazyBinarySearchTree::insert(int data)
     if (data < 1 || data > 99) { throw std::out_of_range("Data must be in the range [1,99]."); }
 
     if (this->root == nullptr)
-    { // Create a new node with the data
+    { // Create a new node with the key
         this->root = new TreeNode<int>(data);
         ++count;
         return true; // New record inserted
@@ -46,7 +46,7 @@ void LazyBinarySearchTree::recursive_preorder(TreeNode<int>* node, std::string &
 {
     if (node != nullptr)
     {
-        lazy_print(node, result);  // Visit the node and accumulate its data into the result string
+        lazy_print(node, result);  // Visit the node and accumulate its key into the result string
         recursive_preorder(node->left, result);  // Traverse left subtree
         recursive_preorder(node->right, result);  // Traverse right subtree
     }
@@ -60,8 +60,8 @@ bool LazyBinarySearchTree::search_and_insert(TreeNode<int>* &sub_root, int new_d
         ++count;
         return true; // New element inserted
     }
-    else if (new_data < sub_root->data) { return search_and_insert(sub_root->left, new_data); } // Traverse left subtree
-    else if (new_data > sub_root->data) { return search_and_insert(sub_root->right, new_data); } // Traverse right subtree
+    else if (new_data < sub_root->key) { return search_and_insert(sub_root->left, new_data); } // Traverse left subtree
+    else if (new_data > sub_root->key) { return search_and_insert(sub_root->right, new_data); } // Traverse right subtree
     else if (sub_root->deleted)
     { // If the node is marked as deleted, "undelete" it
         sub_root->deleted = false;
@@ -76,9 +76,9 @@ bool LazyBinarySearchTree::remove(int dataToDelete) { return search_and_delete(t
 bool LazyBinarySearchTree::search_and_delete(TreeNode<int>* &sub_root, int target)
 {
     if (sub_root == nullptr) { return false; }
-    if (sub_root->data == target) { return sub_root->deleted = true; }
-    else if (target < sub_root->data) { return search_and_delete(sub_root->left, target); }
-    else if (target > sub_root->data) { return search_and_delete(sub_root->right, target); }
+    if (sub_root->key == target) { return sub_root->deleted = true; }
+    else if (target < sub_root->key) { return search_and_delete(sub_root->left, target); }
+    else if (target > sub_root->key) { return search_and_delete(sub_root->right, target); }
     return false;
 }
 
@@ -102,7 +102,7 @@ int LazyBinarySearchTree::findMin()
         TreeNode<int>* node = stack.top();
         stack.pop();
 
-        if (!node->deleted) { return node->data; } // Return the first undeleted node's data
+        if (!node->deleted) { return node->key; } // Return the first undeleted node's key
     }
 
     return -1;  // If no valid (undeleted) node is found
@@ -129,7 +129,7 @@ int LazyBinarySearchTree::findMax()
         TreeNode<int>* node = stack.top();
         stack.pop();
 
-        if (!node->deleted) { return node->data; } // Return the first undeleted node's data
+        if (!node->deleted) { return node->key; } // Return the first undeleted node's key
     }
 
     return -1;  // If no valid (undeleted) node is found
@@ -141,8 +141,8 @@ bool LazyBinarySearchTree::contains(int target)
     TreeNode<int>* node = this->root;
     while (node != nullptr)
     {
-        if (node->data == target) { return !node->deleted; }
-        else if (target < node->data) { node = node->left; }
+        if (node->key == target) { return !node->deleted; }
+        else if (target < node->key) { node = node->left; }
         else { node = node->right; }
     }
     return false;
@@ -161,7 +161,7 @@ std::string LazyBinarySearchTree::print()
 void LazyBinarySearchTree::lazy_print(TreeNode<int>* node, std::string &result)
 {
     if (node->deleted) { result += "*"; }
-    result += std::to_string(node->data) + " ";
+    result += std::to_string(node->key) + " ";
 }
 
 // HEIGHT and SIZE IMPLEMENTATIONS (Placeholders)
