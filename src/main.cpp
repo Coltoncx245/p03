@@ -1,58 +1,87 @@
-#include "utility.h"
-#include "Binary_node.h"
-#include "Binary_tree.h"
-#include "Search_tree.h"
+#include "LazyBinarySearchTree.h"
 
-// void process_command(const std::string &command, Lazy_tree<int> &tree, std::ofstream &outfile);
+void process_command(std::string &command, std::string &arg, LazyBinarySearchTree &tree, std::ofstream &outfile);
+void process_command(std::string &command, LazyBinarySearchTree &tree, std::ofstream &outfile);
+
 
 int main(int argc, char *argv[])
 {
+
+   if (argc >= 2)
+   {
+
+      LazyBinarySearchTree tree = LazyBinarySearchTree();
+
+      std::ifstream infile(argv[1]);
+      std::ofstream outfile(argv[2]);
+      std::string line;
+      
+      while (getline(infile, line))
+      {
+         try
+         {
+            std::istringstream sstream(line);
+            std::string token;
+            std::string token_stack[3] = {"", "", ""};
+            int i = 0;
+
+            while (std::getline(sstream,token,':'))
+            {
+               token_stack[i] = token;
+               i++;
+            }
+
+            switch (i)
+            {
+            case 1:
+               process_command(token_stack[0], tree, outfile);
+               break;
+            case 2:
+               process_command(token_stack[0], token_stack[1], tree, outfile);
+               break;
+            default:
+               break;
+            }
+         }
+         catch(TreeException& e)
+         {
+            outfile << e.what() << std::endl;
+         }
+      }
+   }
+   else
+   {
+      std::cout << "CL error" << std::endl;
+   }
+   
    return 0;
 }
 
-////// This is a very rough idea of what I think we're going to have to do logically to parse the input file
-////// But uncomment at your own risk
-//void process_command(const std::string &command, Lazy_tree<int> &tree, std::ofstream &outfile) {
-//    std::istringstream iss(command);
-//    std::string operation;
-//    char colon;
-//    int key;
-//
-//    // Parse the operation
-//    iss >> operation;
-//
-//    if (operation == "insert" || operation == "remove") {
-//        if (iss >> colon >> key && colon == ':') {
-//            if (operation == "insert") {
-//                // Check if key is within the valid range and attempt insertion
-//                if (key >= 1 && key <= 99) {
-//                    outfile << (tree.insert(key) ? "true" : "false") << std::endl;
-//                } else {
-//                    outfile << "Error: insert (illegal argument: not in range)" << std::endl;
-//                }
-//            } else if (operation == "remove") {
-//                outfile << (tree.remove(key) ? "true" : "false") << std::endl;
-//            }
-//        } else {
-//            outfile << "Error: " << operation << " (no key)" << std::endl;
-//        }
-//    } else if (operation == "contains") {
-//        if (iss >> colon >> key && colon == ':') {
-//            outfile << (tree.contains(key) ? "true" : "false") << std::endl;
-//        } else {
-//            outfile << "Error: contains (no key)" << std::endl;
-//        }
-//    } else if (operation == "findMin") {
-//        outfile << tree.findMin() << std::endl;
-//    } else if (operation == "findMax") {
-//        outfile << tree.findMax() << std::endl;
-//    } else if (operation == "print") {
-//        outfile << tree.print() << std::endl;
-//    } else if (operation == "height") {
-//        outfile << tree.height() << std::endl;
-//    } else if (operation == "size") {
-//        outfile << tree.size() << std::endl;
-//    } else {
-//        outfile << "Error: " << operation << " (invalid command)" << std::endl;
-//    }
-//}
+// Process commands which take no argument
+void process_command(std::string &command, LazyBinarySearchTree &tree, std::ofstream &outfile)
+{
+   command = lower(command);
+   if (tree.Commands.count(command))
+   {
+      if (command == "print"){outfile << tree.print() << std::endl;}
+      else if (command == "height"){outfile << tree.height() << std::endl;}
+      else if (command == "findmax"){outfile << tree.findMax() << std::endl;}
+      else if (command == "findmin"){outfile << tree.findMin() << std::endl;}
+      else if (command == "size"){outfile << tree.size() << std::endl;}
+   }
+   else{outfile << "Error: " << command << " (invalid command)" << std::endl;}
+}
+
+// Process commands which take an argument
+void process_command(std::string &command, std::string &arg, LazyBinarySearchTree &tree, std::ofstream &outfile)
+{
+   command = lower(command);
+   arg = lower(arg);
+   if (tree.Commands.count(command))
+   {
+      if (command == "insert"){outfile << tree.insert(string_to_int(arg)) << std::endl;}
+      else if (command == "remove"){outfile << tree.remove(string_to_int(arg)) << std::endl;}
+      else if (command == "contains"){outfile << tree.contains(string_to_int(arg)) << std::endl;}
+   }
+   else{outfile << "Error: " << command << " (invalid command)" << std::endl;}
+}

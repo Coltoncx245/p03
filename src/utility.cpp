@@ -6,3 +6,12 @@ int string_to_int(const string& s){
    instr >> n;
    return n;
 }
+
+std::string lower(std::string s)
+{
+    string result = "";
+
+    for (char ch : s) result += tolower(ch);
+
+    return result;
+}
