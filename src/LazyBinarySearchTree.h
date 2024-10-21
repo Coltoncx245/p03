@@ -56,9 +56,10 @@ public:
         this->arg = std::to_string(arg);
     }
 
+
     const char* what()
     {
-        return (this->message + " Command: " + this->command + " Argument: " + this->arg).c_str();
+        return (this->message + " | Command: " + this->command + " | Argument: " + this->arg).c_str();
     }
 
 };
@@ -66,7 +67,7 @@ public:
 // INSERT IMPLEMENTATION
 bool LazyBinarySearchTree::insert(int data)
 {
-    if (data < 1 || data > 99) { std::cout << data << std::endl; throw TreeException("Error: illegal argument (not in range)", "insert", data); }
+    if (data < 1 || data > 99) {throw TreeException("Error: illegal argument (not in range)", "insert", data); }
 
     if (this->root == nullptr)
     { // Create a new node with the key

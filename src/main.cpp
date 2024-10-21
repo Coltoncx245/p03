@@ -7,7 +7,7 @@ void process_command(std::string &command, LazyBinarySearchTree &tree, std::ofst
 int main(int argc, char *argv[])
 {
 
-   if (argc >= 2)
+   if (argc > 2)
    {
 
       LazyBinarySearchTree tree = LazyBinarySearchTree();
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
    }
    else
    {
-      std::cout << "CL error" << std::endl;
+      std::cout << "Command Line Error\nExpected format: p03 input.dat output.dat" << std::endl;
    }
    
    return 0;
@@ -68,8 +68,12 @@ void process_command(std::string &command, LazyBinarySearchTree &tree, std::ofst
       else if (command == "findmax"){outfile << tree.findMax() << std::endl;}
       else if (command == "findmin"){outfile << tree.findMin() << std::endl;}
       else if (command == "size"){outfile << tree.size() << std::endl;}
+      else if (command == "insert" || command == "remove" || command == "contains")
+      {
+         throw TreeException("Error: Command expects key, but none found", command.c_str(), -1);
+      }
    }
-   else{outfile << "Error: " << command << " (invalid command)" << std::endl;}
+   else{throw TreeException("Error: Invalid command", command.c_str(), -1);}
 }
 
 // Process commands which take an argument
@@ -79,9 +83,9 @@ void process_command(std::string &command, std::string &arg, LazyBinarySearchTre
    arg = lower(arg);
    if (tree.Commands.count(command))
    {
-      if (command == "insert"){outfile << tree.insert(string_to_int(arg)) << std::endl;}
-      else if (command == "remove"){outfile << tree.remove(string_to_int(arg)) << std::endl;}
-      else if (command == "contains"){outfile << tree.contains(string_to_int(arg)) << std::endl;}
+      if (command == "insert"){outfile << (tree.insert(string_to_int(arg)) ? "true" : "false") << std::endl;}
+      else if (command == "remove"){outfile << (tree.remove(string_to_int(arg)) ? "true" : "false") << std::endl;}
+      else if (command == "contains"){outfile << (tree.contains(string_to_int(arg)) ? "true" : "false") << std::endl;}
    }
    else{outfile << "Error: " << command << " (invalid command)" << std::endl;}
 }

@@ -1,6 +1,6 @@
-all: bst
-bst: main.o utility.o 
-	g++ -o bst main.o utility.o
+all: p03
+p03: main.o utility.o 
+	g++ -o p03 main.o utility.o
 main.o: main.cpp LazyBinarySearchTree.h
 	g++ -c -g main.cpp
 utility.o: utility.cpp
