@@ -9,16 +9,9 @@
 #include <stdexcept>
 #include <unordered_set>
 
-using namespace std;
-
 enum Error_code { duplicate_error, not_present, success };
 
-
-
-int string_to_int(const string& s);
+int string_to_int(const std::string& s);
 std::string lower(std::string s);
-
-
-
 
 #endif

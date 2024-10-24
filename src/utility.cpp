@@ -1,7 +1,7 @@
 #include "utility.h"
 
-int string_to_int(const string& s){
-   istringstream instr(s);
+int string_to_int(const std::string& s){
+   std::istringstream instr(s);
    int n;
    instr >> n;
    return n;
@@ -9,7 +9,7 @@ int string_to_int(const string& s){
 
 std::string lower(std::string s)
 {
-    string result = "";
+    std::string result = "";
 
     for (char ch : s) result += tolower(ch);
 

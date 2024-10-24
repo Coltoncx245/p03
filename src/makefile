@@ -6,4 +6,4 @@ main.o: main.cpp LazyBinarySearchTree.h
 utility.o: utility.cpp
 	g++ -c -g utility.cpp
 clean:
-	del -f *.o
+	rm -f *.o p03.exe

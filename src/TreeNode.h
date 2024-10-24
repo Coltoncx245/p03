@@ -1,25 +1,25 @@
-template <typename Entry>
+template <typename T>
 struct TreeNode
 {
-    TreeNode<Entry>* left;
-    TreeNode<Entry>* right;
-    int key;
+    TreeNode<T>* left;
+    TreeNode<T>* right;
+    T key;
     bool deleted;
 
     // Constructors:
     TreeNode();
-    explicit TreeNode(int k);
+    explicit TreeNode(T k);
 
     // Accessor for the key:
-    [[nodiscard]] int getKey() const;
+    [[nodiscard]] T getKey() const;
 };
 
-template <typename Entry>
-TreeNode<Entry>::TreeNode() : key(0), deleted(false), left(nullptr), right(nullptr) {}
+template <typename T>
+TreeNode<T>::TreeNode() : key(0), deleted(false), left(nullptr), right(nullptr) {}
 
-template <typename Entry>
-TreeNode<Entry>::TreeNode(int k) : key(k), deleted(false), left(nullptr), right(nullptr) {}
+template <typename T>
+TreeNode<T>::TreeNode(T k) : key(k), deleted(false), left(nullptr), right(nullptr) {}
 
 // Getter for key
-template <typename Entry>
-int TreeNode<Entry>::getKey() const { return key; }
+template <typename T>
+T TreeNode<T>::getKey() const { return key; }
