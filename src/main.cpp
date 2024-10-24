@@ -1,13 +1,9 @@
 #include "LazyBinarySearchTree.h"
-
-
-
 int main(int argc, char *argv[])
 {
    if (argc > 2)
    {
       LazyBinarySearchTree tree = LazyBinarySearchTree();
-
       std::ifstream infile(argv[1]);
       std::ofstream outfile(argv[2]);
       std::string line;
@@ -20,13 +16,11 @@ int main(int argc, char *argv[])
             std::string token;
             std::string token_stack[3] = {"", "", ""};
             int i = 0;
-
             while (std::getline(sstream,token,':'))
             {
                token_stack[i] = token;
                i++;
             }
-
             switch (i)
             {
             case 1:
@@ -52,4 +46,3 @@ int main(int argc, char *argv[])
    
    return 0;
 }
-
